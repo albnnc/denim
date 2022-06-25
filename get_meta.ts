@@ -1,13 +1,13 @@
 import { defaultPatterns } from "./defaults.ts";
 import { collections } from "./deps.ts";
 import { semver } from "./deps.ts";
-import { ModMeta } from "./types.ts";
+import { Meta } from "./types.ts";
 
 const DEFAULT_VERSION = "latest";
 
-export function getModMeta(
+export function getMeta(
   specifier: string,
-): ModMeta | undefined {
+): Meta | undefined {
   if (specifier.startsWith("file://")) {
     return undefined;
   }

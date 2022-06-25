@@ -1,10 +1,10 @@
 import { colors } from "./deps.ts";
-import { ModGraph } from "./types.ts";
-import { walkModGraph } from "./walk_mod_graph.ts";
+import { Graph } from "./types.ts";
+import { walkGraph } from "./walk_graph.ts";
 
-export function formatModGraph(graph: ModGraph, root: string) {
+export function formatGraph(graph: Graph, root: string) {
   let data = "";
-  walkModGraph({
+  walkGraph({
     graph,
     root,
     visit: (specifier, depth, repeat) => {

@@ -1,33 +1,33 @@
 import { checkTransformRuleSelector } from "./check_transform_rule_selector.ts";
 import { defaultRules } from "./defaults.ts";
 import { collections, semver } from "./deps.ts";
-import { getModMeta } from "./get_mod_meta.ts";
+import { getMeta } from "./get_meta.ts";
 import { isParent } from "./is_parent.ts";
 import { isTopLevel } from "./is_top_level.ts";
-import { ModGraph, ModMeta, TransformRule } from "./types.ts";
-import { walkModGraph } from "./walk_mod_graph.ts";
+import { Graph, Meta, TransformRule } from "./types.ts";
+import { walkGraph } from "./walk_graph.ts";
 
-export interface TransformModGraphOptions {
-  graph: ModGraph;
+export interface TransformGraphOptions {
+  graph: Graph;
   root: string;
   rules?: TransformRule[];
 }
 
-export function transformModGraph(
+export function transformGraph(
   {
     graph,
     root,
     rules = defaultRules,
-  }: TransformModGraphOptions,
+  }: TransformGraphOptions,
 ): Record<string, string> {
   const transforms: Record<string, string> = {};
   const metas = Object.keys(graph)
-    .map((v) => getModMeta(v))
-    .filter(Boolean) as ModMeta[];
+    .map((v) => getMeta(v))
+    .filter(Boolean) as Meta[];
   const metasById = collections.groupBy(metas, (v) => v.id);
   const metasBySpecifier = collections.groupBy(metas, (v) => v.specifier);
   const targets = new Set<string>();
-  walkModGraph({
+  walkGraph({
     graph,
     root,
     visit: (specifier) => {

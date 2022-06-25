@@ -1,9 +1,9 @@
 import { cache, denoGraph } from "./deps.ts";
-import { ModGraph } from "./types.ts";
+import { Graph } from "./types.ts";
 
-export async function buildModGraph(
+export async function buildGraph(
   ...roots: string[]
-): Promise<ModGraph> {
+): Promise<Graph> {
   const { modules } = await denoGraph
     .createGraph(roots, { load: createLoader() })
     .then((v) => v.toJSON());
@@ -29,7 +29,7 @@ export async function buildModGraph(
         },
       });
     },
-    {} as ModGraph,
+    {} as Graph,
   );
   Object.keys(graph).forEach((specifier) => {
     const node = graph[specifier];

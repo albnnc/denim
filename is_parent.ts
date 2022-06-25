@@ -1,15 +1,15 @@
-import { ModGraph } from "./types.ts";
-import { walkModGraph } from "./walk_mod_graph.ts";
+import { Graph } from "./types.ts";
+import { walkGraph } from "./walk_graph.ts";
 
 export interface IsParentOptions {
   parent: string;
   child: string;
-  graph: ModGraph;
+  graph: Graph;
 }
 
 export function isParent({ parent, child, graph }: IsParentOptions) {
   let res = false;
-  walkModGraph({
+  walkGraph({
     graph,
     root: parent,
     visit: (specifier) => {

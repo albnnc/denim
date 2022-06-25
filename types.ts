@@ -1,13 +1,12 @@
-export interface ModGraphNode {
+export interface GraphNode {
   parents: Set<string>;
   deps: Set<string>;
 }
 
-export type ModGraph = Record<string, ModGraphNode>;
+export type Graph = Record<string, GraphNode>;
 
-export interface ModMeta {
+export interface Meta {
   specifier: string;
-
   matches: Record<string, string>;
   id: string;
   version: string;

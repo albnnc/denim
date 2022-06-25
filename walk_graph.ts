@@ -1,7 +1,7 @@
-import { ModGraph } from "./types.ts";
+import { Graph } from "./types.ts";
 
-export interface WalkModGraphOptions {
-  graph: ModGraph;
+export interface WalkGraphOptions {
+  graph: Graph;
   root: string;
   visit: (
     specifier: string,
@@ -10,12 +10,12 @@ export interface WalkModGraphOptions {
   ) => boolean | undefined | void;
 }
 
-export function walkModGraph(
+export function walkGraph(
   {
     graph,
     root,
     visit,
-  }: WalkModGraphOptions,
+  }: WalkGraphOptions,
 ) {
   const accessed = new Set<string>();
   const walk = (specifier = root, depth = 0) => {

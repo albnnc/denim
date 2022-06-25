@@ -1,11 +1,11 @@
 import { semver } from "./deps.ts";
-import { ModMeta } from "./types.ts";
+import { Meta } from "./types.ts";
 
 const selectorRegExp = /^@?(.+)@(.+)$/;
 
 export function checkTransformRuleSelector(
   selector: string,
-  meta: ModMeta,
+  meta: Meta,
 ) {
   if (selector === "*") {
     return true;
