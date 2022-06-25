@@ -7,6 +7,7 @@ export type ModGraph = Record<string, ModGraphNode>;
 
 export interface ModMeta {
   specifier: string;
+
   matches: Record<string, string>;
   id: string;
   version: string;

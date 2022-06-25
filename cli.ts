@@ -5,6 +5,7 @@ const root = "file://" + path.resolve(Deno.args[0]);
 
 log.info(`Building for "${root}"`);
 const graph = await buildModGraph(root);
+console.log(graph);
 
 log.info(`Formatting`);
 console.log(formatModGraph(graph, root));

@@ -1,17 +1,17 @@
+import { defaultPatterns } from "./defaults.ts";
 import { collections } from "./deps.ts";
 import { semver } from "./deps.ts";
 import { ModMeta } from "./types.ts";
 
 const DEFAULT_VERSION = "latest";
 
-export function getDepMeta(
+export function getModMeta(
   specifier: string,
-  patterns: URLPatternInit[],
 ): ModMeta | undefined {
   if (specifier.startsWith("file://")) {
     return undefined;
   }
-  const prepared = patterns.map((v) => new URLPattern(v)).reverse();
+  const prepared = defaultPatterns.map((v) => new URLPattern(v)).reverse();
   const matches = prepared.reduce(
     (p, v) => p ?? getMatches(specifier, v),
     undefined as undefined | Record<string, string>,
