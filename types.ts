@@ -12,11 +12,11 @@ export interface ModMeta {
   version: string;
 }
 
-export interface Rule {
+export interface TransformRule {
   source: string;
   target: string;
 }
 
 export interface Config {
-  rules?: Rule[];
+  transforms?: TransformRule[];
 }

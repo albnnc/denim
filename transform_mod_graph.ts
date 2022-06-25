@@ -1,16 +1,16 @@
-import { checkRule } from "./check_rule.ts";
+import { checkTransformRuleSelector } from "./check_transform_rule_selector.ts";
 import { defaultPatterns, defaultRules } from "./defaults.ts";
 import { collections, semver } from "./deps.ts";
 import { getDepMeta } from "./get_mod_meta.ts";
 import { isParent } from "./is_parent.ts";
-import { ModGraph, ModMeta, Rule } from "./types.ts";
+import { ModGraph, ModMeta, TransformRule } from "./types.ts";
 import { walkModGraph } from "./walk_mod_graph.ts";
 
 export interface TransformModGraphOptions {
   graph: ModGraph;
   root: string;
   patterns?: URLPatternInit[];
-  rules?: Rule[];
+  rules?: TransformRule[];
 }
 
 export function transformModGraph(
@@ -46,11 +46,13 @@ export function transformModGraph(
       ) {
         return;
       }
-      const targetRule = rules.find((v) => checkRule(v.source, meta));
-      if (!targetRule) {
+      const ruleToApply = rules.find((v) =>
+        checkTransformRuleSelector(v.source, meta)
+      );
+      if (!ruleToApply) {
         return;
       }
-      const targetRuleToken = targetRule.target
+      const targetSelector = ruleToApply.target
         .replace("{id}", meta.id)
         .replace("{version}", meta.version);
       const targetMeta = metasById[meta.id]
@@ -62,7 +64,7 @@ export function transformModGraph(
         .find((v) =>
           v.specifier !== specifier &&
           semver.gte(v.version, meta.version) &&
-          checkRule(targetRuleToken, v) &&
+          checkTransformRuleSelector(targetSelector, v) &&
           !isParent({ parent: v.specifier, child: specifier, graph }) &&
           !isParent({ parent: specifier, child: v.specifier, graph })
         );
