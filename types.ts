@@ -1,10 +1,9 @@
-export interface ModMap {
-  root: string;
-  mods: Record<string, {
-    parents: Set<string>;
-    deps: Set<string>;
-  }>;
+export interface ModGraphNode {
+  parents: Set<string>;
+  deps: Set<string>;
 }
+
+export type ModGraph = Record<string, ModGraphNode>;
 
 export interface ModMeta {
   specifier: string;
