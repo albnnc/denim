@@ -1,33 +1,47 @@
 import { cache, denoGraph } from "./deps.ts";
-import { DepMap } from "./types.ts";
+import { ModMap } from "./types.ts";
 
-export async function buildDepMap(root: string): Promise<DepMap> {
+export async function buildModMap(root: string): Promise<ModMap> {
   const { modules, roots } = await denoGraph
     .createGraph(
       root,
       { load: createLoader() },
     )
     .then((v) => v.toJSON());
-  return {
+  const modMap = {
     root: roots[0],
-    deps: modules.reduce(
+    mods: modules.reduce(
       (prev, {
         specifier,
         dependencies = {},
         typesDependency: { specifier: types } = {},
       }) => {
-        return ({
-          ...prev,
-          [specifier]: Object.values(dependencies)
+        const deps = new Set(
+          Object.values(dependencies)
             .map((v) => v.code?.specifier)
             .concat(types ? [types] : [])
             .sort()
-            .filter((v) => v),
+            .filter(Boolean) as string[],
+        );
+        return ({
+          ...prev,
+          [specifier]: {
+            // We're going to fill parents later.
+            parents: new Set<string>(),
+            deps,
+          },
         });
       },
-      {},
+      {} as ModMap["mods"],
     ),
   };
+  Object.keys(modMap.mods).forEach((modSpecifier) => {
+    const mod = modMap.mods[modSpecifier];
+    for (const depSpecifier of mod.deps) {
+      modMap.mods[depSpecifier].parents.add(modSpecifier);
+    }
+  });
+  return modMap;
 }
 
 function createLoader() {

@@ -1,16 +1,16 @@
-import { DepMap } from "./types.ts";
-import { walkDepMap } from "./walk_dep_map.ts";
+import { ModMap } from "./types.ts";
+import { walkModMap } from "./walk_mod_map.ts";
 
 export interface IsParentOptions {
   parent: string;
   child: string;
-  depMap: DepMap;
+  modMap: ModMap;
 }
 
-export function isParent({ parent, child, depMap }: IsParentOptions) {
+export function isParent({ parent, child, modMap }: IsParentOptions) {
   let res = false;
-  walkDepMap({
-    ...depMap,
+  walkModMap({
+    ...modMap,
     root: parent,
   }, (specifier) => {
     if (specifier === child) {

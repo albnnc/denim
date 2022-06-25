@@ -1,7 +1,7 @@
-import { DepMap } from "./types.ts";
+import { ModMap } from "./types.ts";
 
-export function walkDepMap(
-  { root, deps }: DepMap,
+export function walkModMap(
+  { root, mods }: ModMap,
   fn: (
     specifier: string,
     depth: number,
@@ -19,7 +19,7 @@ export function walkDepMap(
     if (shouldStop) {
       return;
     }
-    deps[specifier].forEach((v) => walk(v, depth + 1));
+    mods[specifier].deps?.forEach((v) => walk(v, depth + 1));
   };
   walk();
 }

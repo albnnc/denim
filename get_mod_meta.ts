@@ -1,13 +1,13 @@
 import { collections } from "./deps.ts";
 import { semver } from "./deps.ts";
-import { DepMeta } from "./types.ts";
+import { ModMeta } from "./types.ts";
 
 const DEFAULT_VERSION = "latest";
 
 export function getDepMeta(
   specifier: string,
   patterns: URLPatternInit[],
-): DepMeta | undefined {
+): ModMeta | undefined {
   if (specifier.startsWith("file://")) {
     return undefined;
   }
