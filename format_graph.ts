@@ -7,10 +7,10 @@ export function formatGraph(graph: Graph, root: string) {
   walkGraph({
     graph,
     root,
-    visit: (specifier, depth, repeat) => {
+    visit: (specifier, depth, supplementary) => {
       const indent = new Array(depth).fill("  ").join("");
       data += indent +
-        (repeat ? colors.dim(specifier) : specifier) +
+        (supplementary ? colors.dim(specifier) : specifier) +
         "\n";
     },
   });

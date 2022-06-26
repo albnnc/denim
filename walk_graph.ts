@@ -1,3 +1,4 @@
+import { getMeta } from "./get_meta.ts";
 import { Graph } from "./types.ts";
 
 export interface WalkGraphOptions {
@@ -6,7 +7,7 @@ export interface WalkGraphOptions {
   visit: (
     specifier: string,
     depth: number,
-    repeat: boolean,
+    transitional: boolean,
   ) => boolean | undefined | void;
 }
 
@@ -17,18 +18,15 @@ export function walkGraph(
     visit,
   }: WalkGraphOptions,
 ) {
-  const accessed = new Set<string>();
-  const walk = (specifier = root, depth = 0) => {
-    if (accessed.has(specifier)) {
-      visit(specifier, depth, true);
-      return;
-    }
-    accessed.add(specifier);
-    const shouldStop = visit(specifier, depth, false);
+  const walk = (specifier = root, depth = 0, supplementary = false) => {
+    const shouldStop = visit(specifier, depth, supplementary);
     if (shouldStop) {
       return;
     }
-    graph[specifier].deps.forEach((v) => walk(v, depth + 1));
+    graph[specifier].deps.forEach((v) => {
+      const supplementary = getMeta(specifier)?.id === getMeta(v)?.id;
+      walk(v, depth + 1, supplementary);
+    });
   };
   walk();
 }
