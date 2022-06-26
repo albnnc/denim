@@ -1,9 +1,11 @@
-const prefix = "std|x|-|v\\d+";
 const idLike = "[a-zA-Z0-9\\-_]+";
 const pathname = "/" + [
-  `(${prefix})?`,
+  `(std|x|-|v\\d+)?`,
   `:id(@${idLike}/${idLike}|${idLike}){@:version}?`,
-  "*?",
+  `(es\\d+)?`,
+  `([^/]+/unoptimized)?`,
+  `([^/]+/optimized)?`,
+  ":file*",
 ].join("/");
 
 export const defaultPatterns = [{ pathname }];

@@ -17,12 +17,13 @@ export function getMeta(
     undefined as undefined | Record<string, string>,
   ) ?? {};
   const id = matches.id;
+  const file = matches.file || undefined;
   const version = semver.coerce(matches.version)?.toString() ||
     DEFAULT_VERSION;
   if (!id || !version) {
     return undefined;
   }
-  return { specifier, matches, id, version };
+  return { specifier, matches, id, version, file };
 }
 
 function getMatches(

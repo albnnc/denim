@@ -10,6 +10,7 @@ export interface Meta {
   matches: Record<string, string>;
   id: string;
   version: string;
+  file?: string;
 }
 
 export interface TransformRule {

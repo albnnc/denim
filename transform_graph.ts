@@ -62,6 +62,7 @@ export function transformGraph(
         )
         .find((v) =>
           v.specifier !== specifier &&
+          v.file === meta.file &&
           semver.gte(v.version, meta.version) &&
           checkTransformRuleSelector(targetSelector, v) &&
           !isParent({ parent: v.specifier, child: specifier, graph }) &&
