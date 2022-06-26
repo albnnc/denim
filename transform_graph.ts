@@ -31,15 +31,15 @@ export function transformGraph(
     walkGraph({
       graph,
       root,
-      visit: (specifier, _, repeat) => {
-        if (repeat || targets.has(specifier)) {
+      visit: (specifier, supplementary) => {
+        if (targets.has(specifier)) {
           return true;
         }
         const meta = metasBySpecifier[specifier]?.[0];
         if (
+          supplementary ||
           !meta ||
-          !checkTransformRuleSelector(rule.source, meta) ||
-          !isTransitional(specifier, graph)
+          !checkTransformRuleSelector(rule.source, meta)
         ) {
           return;
         }

@@ -6,8 +6,8 @@ export interface WalkGraphOptions {
   root: string;
   visit: (
     specifier: string,
+    supplementary: boolean,
     depth: number,
-    transitional: boolean,
   ) => boolean | undefined | void;
 }
 
@@ -18,14 +18,20 @@ export function walkGraph(
     visit,
   }: WalkGraphOptions,
 ) {
-  const walk = (specifier = root, depth = 0, supplementary = false) => {
-    const shouldStop = visit(specifier, depth, supplementary);
+  const walk = (specifier = root, supplementary = false, depth = 0) => {
+    const shouldStop = visit(specifier, supplementary, depth);
     if (shouldStop) {
       return;
     }
     graph[specifier].deps.forEach((v) => {
-      const supplementary = getMeta(specifier)?.id === getMeta(v)?.id;
-      walk(v, depth + 1, supplementary);
+      const priorMeta = getMeta(specifier);
+      const nextMeta = getMeta(v);
+      const supplementary = (
+        priorMeta &&
+        nextMeta &&
+        priorMeta.id === nextMeta.id
+      );
+      walk(v, supplementary, depth + 1);
     });
   };
   walk();
